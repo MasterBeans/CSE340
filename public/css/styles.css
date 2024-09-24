@@ -58,7 +58,7 @@ body h1{
 }
 
 .flybox{
-  margin-left: 60px ;
+  margin-left: 100px ;
   position: absolute;
   width: 200px;
   height: inherit;
@@ -101,3 +101,48 @@ body h1{
   white-space: nowrap;
 }
 
+.content-details{
+  display: flex;
+  flex-direction: row; 
+  align-content: center;
+  padding: 20px;
+  justify-content: center;
+  
+}
+
+.upgrades, .reviews{
+  padding: 20px;
+  margin: 10px auto;
+  flex: 1; 
+  box-sizing: border-box; 
+}
+
+.upgrades{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 columns */
+  gap: 10px; /* Space between boxes */
+  padding: 20px;
+  justify-content: space-around; /* Center horizontally */
+  align-items: center; /* Center vertically */
+}
+.upgrades h3{
+  grid-column: span 2;
+}
+
+.upgrade-item {
+  text-align: center;
+  
+  
+}
+
+.upgrade-image{
+   background-color: #0095ff;
+   justify-content: center;
+   align-items: center;
+   height: 100px;
+}
+
+.upgrade-image img{
+  padding: 10px;
+  width: 70px;
+}
