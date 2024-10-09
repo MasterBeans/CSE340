@@ -28,18 +28,24 @@ header a{
   padding-right: 20px;
 }
 
+
 nav ul{
   list-style: none;
   background-color: #555;
   overflow: auto;
   color: white;
+  float: none;
+  text-align: center;
+  align-content: center;
+  display: flex;
+  width: 100%;
 }
 
 nav ul li{
   padding: 12px 0px;
-  float: left;
-  text-align: center;
-  width: 20%;
+  float:none;
+  width: 100%;
+  
 }
 
 nav ul li:hover{
