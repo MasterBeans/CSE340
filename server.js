@@ -12,6 +12,10 @@ const app = express()
 const static = require("./routes/static")
 const baseController = require("./controllers/baseController")
 const inventoryRoute = require("./routes/inventoryRoute")
+const errorController = require("./controllers/errorController") //import error controller
+const errorRoute = require("./routes/errorRoute");
+
+
 /* ***********************
  * View Engine and Templates
  *************************/
@@ -28,6 +32,18 @@ app.use(static)
 app.get("/", baseController.buildHome)
 // Inventory routes
 app.use("/inv", inventoryRoute)
+app.use(errorRoute); // Use the new error route
+
+/* ***********************
+ * Error Handling
+ *************************/
+// Handle 404 errors
+app.use(errorController.handle404)
+
+// General error handler
+app.use(errorController.handle500)
+
+
 
 /* ***********************
  * Local Server Information
@@ -42,3 +58,4 @@ const host = process.env.HOST
 app.listen(port, () => {
   console.log(`app listening on ${host}:${port}`)
 })
+ 

@@ -39,9 +39,9 @@ Util.buildClassificationGrid = async function(data){
         + '" title="View ' + vehicle.inv_make + ' '+ vehicle.inv_model 
         + 'details"><img src="' + vehicle.inv_thumbnail 
         +'" alt="Image of '+ vehicle.inv_make + ' ' + vehicle.inv_model 
-        +' on CSE Motors" /></a>'
+        +' on CSE Motors" ></a>'
         grid += '<div class="namePrice">'
-        grid += '<hr />'
+        grid += '<hr >'
         grid += '<h2>'
         grid += '<a href="../../inv/detail/' + vehicle.inv_id +'" title="View ' 
         + vehicle.inv_make + ' ' + vehicle.inv_model + ' details">' 
@@ -59,5 +59,31 @@ Util.buildClassificationGrid = async function(data){
     return grid
   }
 
+
+  /* **************************************
+ * Format the vehicle detail HTML
+ * ************************************ */
+Util.formatVehicleDetailHtml = function (vehicle) {
+  const { inv_make, inv_model, inv_year, inv_price, inv_mileage, inv_description, inv_image } = vehicle;
+
+  // Format price and mileage with commas
+  const formattedPrice = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(inv_price);
+  const formattedMileage = new Intl.NumberFormat('en-US').format(inv_mileage);
+  
+  return `
+    <div class="vehicle-detail-container">
+      <div class="vehicle-image">
+        <img src="${inv_image}" alt="${inv_make} ${inv_model}" >
+      </div>
+      <div class="vehicle-info">
+        <h1>${inv_make} ${inv_model}</h1>
+        <h2>Year: ${inv_year}</h2>
+        <h3>Price: ${formattedPrice}</h3>
+        <p>Mileage: ${formattedMileage} miles</p>
+        <p>Description: ${inv_description}</p>
+      </div>
+    </div>
+  `;
+};
 
 module.exports = Util

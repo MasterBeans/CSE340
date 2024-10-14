@@ -18,4 +18,12 @@
       .reviews {
         order: 1;
       }
+
+      .vehicle-detail-container {
+        flex-direction: column;
+    }
+
+    .vehicle-image, .vehicle-info {
+        max-width: 100%;
+    }
 }
