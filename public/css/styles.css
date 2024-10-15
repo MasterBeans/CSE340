@@ -289,12 +289,20 @@ footer{
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   width: 300px;
   text-align: center;
+  margin: 0 auto;
 }
 
 /* Styling the title */
 .login-card h1 {
   color: #fff;
   margin-bottom: 20px;
+}
+.login-card p{
+  color: white;
+}
+
+.login-card a{
+  color: white;
 }
 
 /* Flash message style */
@@ -341,16 +349,128 @@ footer{
   background-color: #ccc;
 }
 
-/* Styling the registration link */
-#register {
+/* General Form Styles */
+
+.registration-card{
+  background-color: #2f3e50; /* Dark background */
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 300px;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.registration-card h1{
   color: #fff;
+  margin-bottom: 20px;
 }
 
-#register a {
-  color: #87cefa; /* Light blue for the sign-up link */
-  text-decoration: none;
+.registration-card p{
+  color: white;
 }
 
-#register a:hover {
+.registration-form label {
+  display: block;
+  color: #fff;
+  text-align: left;
+  margin-bottom: 5px;
+}
+
+.registration-form input[type="text"],
+.registration-form input[type="email"],
+.registration-form input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.registration-form input[type="text"]:focus,
+.registration-form input[type="email"]:focus,
+.registration-form input[type="password"]:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.8);
+}
+
+.registration-form button {
+  background-color: #fff;
+  color: #2f3e50;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.registration-form button:hover {
+  background-color: #ccc;
+}
+
+/* Additional Link for Sign-up */
+.registration-form .sign-up-link {
+  color: #6fc1ff; /* Light blue color to match login */
+  display: block;
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+.registration-form .sign-up-link:hover {
   text-decoration: underline;
+}
+
+.flash-message {
+  color: red;
+  text-align: center;
+  margin-bottom: 1em;
+}
+
+button[type="button"] {
+  display: block;
+  margin: 1em 0;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 0.75em;
+  cursor: pointer;
+}
+
+button[type="button"]:hover {
+  background-color: #0056b3;
+}
+
+/* Container for the password field and the toggle icon */
+.password-container {
+  position: relative;
+  
+}
+
+/* Style the password input to match the other inputs */
+.password-container input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  padding-right: 0px; /* Leave space for the icon */
+}
+
+/* Position and style the eye icon */
+.toggle-password {
+  position: absolute;
+  top: 35%;
+  right: 2px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 15px;
+  color: #888;
+}
+
+.toggle-password:hover {
+  color: #333;
 }
