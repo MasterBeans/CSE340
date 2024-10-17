@@ -1,11 +1,52 @@
 const invModel = require("../models/inventory-model")
 const Util = {}
 
-//console.log(data)
+/* **************************************
+ * Centralized Error Handler
+ * This function standardizes error handling.
+ * ************************************ */
+/* **************************************
+ * 404 Error Handler
+ * ************************************ */
+Util.handle404 = (req, res, next) => {
+  res.status(404).render("404", {
+      title: "404 - Page Not Found",
+      errorMessage: "The page you are looking for does not exist.",
+      layout: false 
+  })
+}
+
+/* **************************************
+* General Error Handler (500 and other server errors)
+* ************************************ */
+Util.handle500 = (err, req, res, next) => {
+  const errorMessage = err.message || "An unexpected error occurred.";
+  res.status(500).render("500", {
+      title: "500 - Server Error",
+      errorMessage: errorMessage,
+      layout: false 
+  });
+};
+
+/* **************************************
+* Async Error Wrapper
+* Wrap async functions and pass errors to next()
+* ************************************ */
+Util.catchAsyncErrors = function (fn) {
+  return function (req, res, next) {
+    fn(req, res, next).catch((error) => {
+      next(error); // Forward errors to the centralized error handler
+    });
+  };
+};
+
+
+
+
 /* ************************
  * Constructs the nav HTML unordered list
  ************************** */
-Util.getNav = async function (req, res, next) {
+Util.getNav = async function () {
   let data = await invModel.getClassifications()
   let list = "<ul>"
   list += '<li><a href="/" title="Home page">Home</a></li>'
@@ -60,30 +101,49 @@ Util.buildClassificationGrid = async function(data){
   }
 
 
-  /* **************************************
+ /* **************************************
  * Format the vehicle detail HTML
  * ************************************ */
 Util.formatVehicleDetailHtml = function (vehicle) {
-  const { inv_make, inv_model, inv_year, inv_price, inv_mileage, inv_description, inv_image } = vehicle;
+  const { inv_make, inv_model, inv_year, inv_price, inv_miles, inv_description, inv_image } = vehicle;
 
-  // Format price and mileage with commas
+  // Format price and mileage
   const formattedPrice = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(inv_price);
-  const formattedMileage = new Intl.NumberFormat('en-US').format(inv_mileage);
-  
+  const formattedMileage = new Intl.NumberFormat('en-US').format(inv_miles);
+
   return `
-    <div class="vehicle-detail-container">
-      <div class="vehicle-image">
-        <img src="${inv_image}" alt="${inv_make} ${inv_model}" >
+      <div class="vehicle-detail-container">
+          <div class="vehicle-image">
+              <img src="${inv_image}" alt="${inv_make} ${inv_model}" >
+          </div>
+          <div class="vehicle-info">
+              <h1>${inv_make} ${inv_model}</h1>
+              <h2>Year: ${inv_year}</h2>
+              <h3>Price: ${formattedPrice}</h3>
+              <p>Mileage: ${formattedMileage} miles</p>
+              <p>Description: ${inv_description}</p>
+          </div>
       </div>
-      <div class="vehicle-info">
-        <h1>${inv_make} ${inv_model}</h1>
-        <h2>Year: ${inv_year}</h2>
-        <h3>Price: ${formattedPrice}</h3>
-        <p>Mileage: ${formattedMileage} miles</p>
-        <p>Description: ${inv_description}</p>
-      </div>
-    </div>
   `;
 };
 
+// Function to build classification dropdown list
+Util.buildClassificationList = async function (classification_id = null) {
+  let data = await invModel.getClassifications()
+  let classificationList =
+    '<select name="classification_id" id="classificationList" required>'
+  classificationList += "<option value=''>Choose a Classification</option>"
+  data.rows.forEach((row) => {
+    classificationList += '<option value="' + row.classification_id + '"'
+    if (
+      classification_id != null &&
+      row.classification_id == classification_id
+    ) {
+      classificationList += " selected "
+    }
+    classificationList += ">" + row.classification_name + "</option>"
+  })
+  classificationList += "</select>"
+  return classificationList
+}
 module.exports = Util

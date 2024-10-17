@@ -5,18 +5,22 @@
 /* ***********************
  * Require Statements
  *************************/
-const express = require("express")
-const expressLayouts = require("express-ejs-layouts")
-const env = require("dotenv").config()
-const app = express()
-const static = require("./routes/static")
-const baseController = require("./controllers/baseController")
-const inventoryRoute = require("./routes/inventoryRoute")
-const errorController = require("./controllers/errorController") //import error controller
-const errorRoute = require("./routes/errorRoute")
-const session = require("express-session")
-const pool = require('./database/')
-const accountRoute = require('./routes/accountRoute')
+const express = require("express");
+const expressLayouts = require("express-ejs-layouts");
+const env = require("dotenv").config();
+const app = express();
+const session = require("express-session");
+const pool = require('./database/');
+const utilities = require('./utilities');
+const static = require("./routes/static");
+const baseController = require("./controllers/baseController");
+const inventoryRoute = require("./routes/inventoryRoute");
+const errorController = require("./controllers/errorController");
+const accountRoute = require('./routes/accountRoute');
+const errorRoute = require("./routes/errorRoute");
+const path = require('path')
+const bodyParser = require("body-parser")
+const flash = require('connect-flash')
 
 /* ***********************
  * Middleware
@@ -32,41 +36,42 @@ app.use(session({
   name: 'sessionId',
 }))
 
-// Express Messages Middleware
-app.use(require('connect-flash')())
+//Flash Message Middleware
+app.use(flash())
 app.use(function(req, res, next){
-  res.locals.messages = require('express-messages')(req, res)
-  next()
+  res.locals.messages = req.flash(); 
+  next();
 })
+
+// Body parser middleware for POST requests
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true })) 
 
 /* ***********************
  * View Engine and Templates
  *************************/
 app.set("view engine", "ejs")
 app.use(expressLayouts)
-app.set("layout", "./layouts/layout") // not at views root
-
+app.set("layout", "./layouts/layout") 
+app.set('views', path.join(__dirname, 'views'))
 
 /* ***********************
  * Routes
  *************************/
 app.use(static)
-//Index route
 app.get("/", baseController.buildHome)
-// Inventory routes
 app.use("/inv", inventoryRoute)
-app.use(errorRoute); // Use the new error route
 app.use('/account', accountRoute)
+app.use(errorRoute)
 
 /* ***********************
  * Error Handling
  *************************/
-// Handle 404 errors
-app.use(errorController.handle404)
+// Use the 404 error handler from utilities
+app.use(utilities.handle404);
 
-// General error handler
-app.use(errorController.handle500)
-
+// Use the 500 error handler for other server errors
+app.use(utilities.handle500);
 
 
 /* ***********************
